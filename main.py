@@ -3,37 +3,7 @@ from fastapi.responses import HTMLResponse
 import os, httpx, hmac, hashlib, json
 
 app = FastAPI()
-# ---------- static landing ----------
-landing = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<title>Luminiteq – Digital Solutions</title>
-<style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;
-         background:#0f172a;color:#f8fafc;display:flex;
-         align-items:center;justify-content:center;height:100vh;}
-    .card{text-align:center;padding:2rem 3rem;border-radius:1rem;
-          background:#1e293b;box-shadow:0 8px 24px #0004;}
-    h1{margin:0;font-size:2rem;}
-    p{opacity:.8;margin:.5rem 0 1.5rem}
-    a{color:#38bdf8;text-decoration:none;font-weight:600}
-</style>
-</head>
-<body>
-<div class="card">
-  <h1>макс иди нахуй</h1>
-  <p>AI Agents · Chatbots · Websites · Automation</p>
-  <a href="mailto:hello@luminiteq.eu">Contact us → hello@luminiteq.eu</a>
-</div>
-</body>
-</html>
-"""
 
-@app.get("/", response_class=HTMLResponse, include_in_schema=False)
-async def index():
-    return HTMLResponse(content=landing, status_code=200)
 # --- env ---
 OPENAI_KEY   = os.getenv("OPENAI_API_KEY")
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
