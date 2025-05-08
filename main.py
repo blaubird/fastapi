@@ -15,12 +15,17 @@ WH_PHONE_ID  = os.getenv("WH_PHONE_ID")
 async def health():
     return {"ok": True}
 
-# --- Meta webhook verification ---
+# ----- Meta VERIFY -----
 @app.get("/webhook", include_in_schema=False)
-async def verify(mode: str = "", challenge: str = "", verify_token: str = ""):
-    if mode == "subscribe" and verify_token == VERIFY_TOKEN:
-        return Response(content=challenge, media_type="text/plain")
-    raise HTTPException(403, "Verification failed")
+async def verify_webhook(
+        hub_mode: str        = Query(None, alias="hub.mode"),
+        hub_token: str       = Query(None, alias="hub.verify_token"),
+        hub_challenge: str   = Query(None, alias="hub.challenge")
+):
+    if hub_mode == "subscribe" and hub_token == VERIFY_TOKEN:
+        # Meta ждёт plain-text
+        return Response(content=hub_challenge, media_type="text/plain")
+    raise HTTPException(status_code=403, detail="Forbidden")
 
 # --- incoming messages ---
 @app.post("/webhook", include_in_schema=False)
